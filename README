@@ -1,0 +1,13 @@
+INSTALL
+	perl Makefile.PL; make; make test; make install;
+	Do 'make install' as root if installing into root-protected directories
+TEST ISSUES
+	prompt for database parameters doesn't appear on some machines	
+	Tests skipped by Test::Harness but not skipped when run individually.
+
+Description
+	This Class::DBI library displays several database queries in an outline format.
+License
+	Perl's
+	
+Have fun!

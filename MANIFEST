@@ -1,0 +1,8 @@
+MANIFEST
+Makefile.PL
+README
+t/outline.t
+t/testlib/Bmark.pm 
+t/testlib/PgBase.pm
+lib/Fry/Lib/CDBI/Outline.pm
+META.yml                                 Module meta-data (added by MakeMaker)
