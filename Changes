@@ -1,0 +1,4 @@
+0.02 Wed Jul 7 2004
+	Small bug fix which produces correct result for multiple searches. Made warnings compatible.
+0.01 Fri Jul 2 2004
+	Initial release.

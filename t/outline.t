@@ -71,6 +71,5 @@ plan tests=>10;
 		is(__PACKAGE__->printnormal($obj_otl[1]{result},[qw/id notes/],2),$print_result,'&print_normal');
 	}
 
-	#eval otlzmain
-	eval {__PACKAGE__->otlzmain("vim(script)salsa")};
-	ok ( ! $@,'&otlzmain');
+	eval {__PACKAGE__->create_outline("vim(script)salsa")};
+	ok ( ! $@,'&create_outline');

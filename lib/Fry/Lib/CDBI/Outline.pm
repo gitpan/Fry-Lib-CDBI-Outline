@@ -2,13 +2,15 @@
 #declarations
 package Fry::Lib::CDBI::Outline;
 	use strict;
+	use warnings;
 	use base 'Class::Data::Global';
-	our $VERSION = '0.01';
+	our $VERSION = '0.02';
 
 	#local
 		#characters used to delimit indent level relative to previous indent
 		#left-indent to the left,even-stay in same indent,right,indent to the right
-		our ($left,$right,$even) = (qw/\) \( ,/);
+		#our ($left,$right,$even) = (qw/\) \( ,/);
+		our ($left,$right,$even) = ('\)','\(',',');
 		our $otlcol = "tags";
 		our $ind;
 #functions
@@ -79,7 +81,7 @@ package Fry::Lib::CDBI::Outline;
 		my $entry ="@_"; 
 
 		$entry =~ s/[$left$right$even]$//;
-		$entry =~ s/([$left$right$even])/\n\1/g;
+		$entry =~ s/([$left$right$even])/\n$1/g;
 		$entry =~ s/^/$even/;
 
 		return split(/\n/,$entry);
@@ -135,6 +137,8 @@ package Fry::Lib::CDBI::Outline;
 		my @otl_obj = @{shift()};
 		my @stack;	#stack stack for a given level
 		my $max = scalar(@otl_obj);
+		#turn off warnings about uninitialized comparisons
+		local $SIG{__WARN__} = sub { return $_[0] unless $_[0] =~ m/Use of uninitialized value/; };
 
 		for (my $i=0;$i <$max;$i++) {		#creates an array of base otl_obj for next search term
 			#doesn't have child	
@@ -157,10 +161,12 @@ package Fry::Lib::CDBI::Outline;
 		my @tag;	#tag stack for a given level
 		my ($body);
 		my $max = scalar(@otl_obj);
+		#turn off warnings about uninitialized comparisons
+		local $SIG{__WARN__} = sub { return $_[0] unless $_[0] =~ m/Use of uninitialized value/; };
 
 		for (my $i=0;$i <$max;$i++) {		#creates an array of base otl_obj for next search term
 			$ind = "\t" x $otl_obj[$i]{indent};
-			$body = $ind . "$otl_obj[$i]{value}\n";
+			$body .= $ind . "$otl_obj[$i]{value}\n";
 
 			#doesn't have child	
 			if ($otl_obj[$i]{indent} >= $otl_obj[$i+1]{indent}) { 
@@ -171,7 +177,7 @@ package Fry::Lib::CDBI::Outline;
 		return $body;
 	} 
 	#main function calling all the above 
-	sub otlzmain {
+	sub create_outline {
 		#d:parses input + returns outline of results
 		my $class =  shift;
 		my (@otl_obj);
@@ -196,7 +202,7 @@ package Fry::Lib::CDBI::Outline;
 #shell function
 	sub normalotl {
 		my $class = shift;
-		print $class->otlzmain(@_);
+		print $class->create_outline(@_);
 	}	
 1;
 
@@ -204,12 +210,12 @@ __END__
 
 =head1 NAME
 
-CDBI::Outline.pm - A Class::DBI library of Fry::Shell for displays several database queries in an
+CDBI::Outline - A Class::DBI library for Fry::Shell which displays several database queries in an
 outline format.
 
 =head1 VERSION
 
-This document describes version 0.01
+This document describes version 0.02
 
 =head1 DESCRIPTION 
 
